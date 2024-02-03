@@ -18,6 +18,7 @@ Feel free to explore each experiment folder, where you will find the source code
 10. [Light Sensor Interfacing](#light-sensor-interfacing)
 11. [LCD Interfacing](#lcd-interfacing)
 12. [Interrupts](#interrupts)
+13. [Temperature Sensor](#temperature-sensor)
 
 ## Digital Output Implementation
 
@@ -66,3 +67,7 @@ Learn how to interface an LCD (Liquid Crystal Display) with Arduino. Display inf
 ## Interrupts
 
 Understand the concept of interrupts in Arduino. Explore how to use interrupts to respond to external events and improve the efficiency of your programs.
+
+## Temperature Sensor
+
+Understanding and measuring temperature is a fundamental aspect of many electronic projects. Explore how to use a temperature sensor to obtain accurate temperature readings and potentially display them on an LCD (Liquid Crystal Display)
