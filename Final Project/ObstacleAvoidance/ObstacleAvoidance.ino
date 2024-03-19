@@ -3,9 +3,12 @@
 
 Servo myservo;
 
+#define trigPin 7
+#define echoPin 5
 #define Speed 100
 
-char value;
+const int left = 13;
+const int right = 10;
 
 AF_DCMotor motor1(1, MOTOR12_1KHZ);
 AF_DCMotor motor2(2, MOTOR12_1KHZ);
@@ -16,6 +19,10 @@ void setup() {
   Serial.begin(9600);
   myservo.attach(9);
   myservo.write(70);
+  pinMode(left, INPUT);
+  pinMode(right, INPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
   motor1.setSpeed(Speed);
   motor2.setSpeed(Speed);
   motor3.setSpeed(Speed);
@@ -23,41 +30,44 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-    value = Serial.read();
-    
-    VoiceControl();
+  int left_IR = digitalRead(left);
+  int right_IR = digitalRead(right);
+  int distance_F = UltrasonicRead();
+
+  if (left_IR == LOW && right_IR == LOW) {
+    if (distance_F > 30) {
+      Serial.println("Forward");
+      setSpeed(65);
+      Forward();
+    } else {
+      setSpeed(0);
+      Stop();
+    }
+  } else if (left_IR == HIGH && right_IR == LOW) {
+    Serial.println("Left");
+    setSpeed(120);
+    Left();
+  } else if (left_IR == LOW && right_IR == HIGH) {
+    Serial.println("Right");
+    setSpeed(120);
+    Right();
+  } else {
+    Serial.println("Stop");
+    setSpeed(0);
+    Stop();
   }
 }
 
-void VoiceControl() {
-  setSpeed(60);
-  switch (value) {
-    case 'F':
-      Forward();
-      break;
-    case 'B':
-      Backward();
-      break;
-    case 'L':
-      Left();
-      break;
-    case 'R':
-      Right();
-      break;
-    case 'S':
-      Stop();
-      break;
-    case '^':
-      setSpeed(90);
-      break;
-    case '*':
-      setSpeed(110);
-      break;
-    case '&':
-      setSpeed(60);
-      break;
-  }
+int UltrasonicRead() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(4);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  long duration = pulseIn(echoPin, HIGH);
+  long cm = (duration * 0.0324) / 2;
+  delay(100);
+  return cm;
 }
 
 void setSpeed(int value) {

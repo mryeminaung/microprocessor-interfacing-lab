@@ -32,22 +32,22 @@ void loop() {
   if (Serial.available() > 0) {
     value = Serial.read();
 
-    if (value == 'W') {
-      mode = 1;
-    } else if (value == 'w') {
-      mode = 2;
-    }
+    // if (value == 'W') {
+    //   mode = 1;
+    // } else if (value == 'w') {
+    //   mode = 2;
+    // }
 
-    switch (mode) {
-      case 1:
-        LineFollower();
-        break;
-      case 2:
-        BluetoothControl();
-        break;
-      default:
-        Stop();
-    }
+    // switch (mode) {
+    // case 1:
+    // LineFollower();
+    // break;
+    // case 2:
+    BluetoothControl();
+    //     break;
+    //   default:
+    //     Stop();
+    // }
   }
 }
 
